@@ -197,11 +197,38 @@ public:
         data_ = new T[2];
     }
 
+    const T &operator*() const {
+      return *(ptr_ - 1);
+    }
+
+
+    const T* End() const {
+        return data_ + size_;
+    }
+
+    T* End() {
+        return data_ + size_;
+    }
+
+    const T* Begin() const {
+        return data_;
+    }
+
+    T* Begin() {
+        return data_;
+    }
+
+    T &operator*() {
+      return *(ptr_ - 1);
+    }
+
+
 private:
     std::ostream& ostream_;
     size_t size_;
     size_t capacity_;
     T* data_;
+    T* ptr_ = nullptr;
 };
 
 template <typename T>
