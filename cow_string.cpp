@@ -9,7 +9,7 @@ struct State {
     char* data_ = nullptr;
 
     State(const char* str, size_t size) : size_(size) {
-        if(size_ * 2 > 0) {
+        if (size_ * 2 > 0) {
             capacity_ = size_ * 2;
         } else {
             capacity_ = 2;
@@ -21,12 +21,12 @@ struct State {
 
     State(const char* str) {
         size_t size = 0;
-        for(auto i = str; *i != '\0'; ++i) {
+        for (auto i = str; *i != '\0'; ++i) {
             size++;
         }
 
         size_ = size;
-        if(size_ * 2 > 0) {
+        if (size_ * 2 > 0) {
             capacity_ = size_ * 2;
         } else {
             capacity_ = 2;
@@ -63,10 +63,10 @@ public:
     }
 
     CowString& operator=(const CowString& other) {
-        if(&other != this) { 
+        if (&other != this) { 
             state_->reference_count--;
 
-            if(state_->reference_count == 0) {
+            if (state_->reference_count == 0) {
                 delete state_;
             }
 
@@ -82,7 +82,7 @@ public:
     }
 
     char& operator[](size_t index) {
-        if(state_->reference_count > 1){
+        if (state_->reference_count > 1){
             state_->reference_count--;
             state_ = new State(state_->data_, state_->size_);
         }
@@ -100,12 +100,12 @@ public:
 
     void PushBack(char c) {
         // Проверяем необходимость копирования при записи
-        if(state_->reference_count > 1) {
+        if (state_->reference_count > 1) {
             state_->reference_count--;
             state_ = new State(state_->data_, state_->size_);
         }
 
-        if(state_->size_ + 1 > state_->capacity_) {
+        if (state_->size_ + 1 > state_->capacity_) {
             Reserve(state_->size_ * 2);
         }
         state_->data_[state_->size_] = c;
@@ -121,12 +121,12 @@ public:
     }
 
     void Reserve(size_t capacity) {
-        if(state_->reference_count > 1) {
+        if (state_->reference_count > 1) {
             state_->reference_count--;
             state_ = new State(state_->data_, state_->size_);
         }
 
-        if(capacity > state_->capacity_) {
+        if (capacity > state_->capacity_) {
             auto new_data = new char[capacity];
             std::copy(state_->data_, state_->data_ + state_->size_, new_data);
             delete[] state_->data_;
@@ -136,12 +136,12 @@ public:
     }
 
     void Resize(size_t size){
-        if(state_->reference_count > 1) {
+        if (state_->reference_count > 1) {
             state_->reference_count--;
             state_ = new State(state_->data_, state_->size_);
         }
 
-        if(size > state_->capacity_){
+        if (size > state_->capacity_){
             Reserve(size * 2);
         }
         
@@ -150,7 +150,7 @@ public:
 
     ~CowString() {
         state_->reference_count--;
-        if(state_->reference_count == 0) {
+        if (state_->reference_count == 0) {
             delete state_;
         }
     }

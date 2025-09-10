@@ -12,7 +12,7 @@ public:
     : size_(max_size) {}
 
     void Put(const K& key, const V& value) {
-        if(q_.size() == size_) {
+        if (q_.size() == size_) {
             auto last_element = q_.back();
             m_.erase(last_element);
             q_.pop_back();
@@ -24,7 +24,7 @@ public:
     bool Get(const K& key, V* value) {
         auto it = m_.find(key);
 
-        if(it == m_.end()) {
+        if (it == m_.end()) {
             return false;
         }
 
